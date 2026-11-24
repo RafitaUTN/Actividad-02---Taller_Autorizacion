@@ -12,10 +12,7 @@ put {
 headers {
   Accept: application/json
   Content-Type: application/json
-}
-
-auth:bearer {
-  token: {{profesorToken}}
+  Authorization: Bearer {{profesorToken}}
 }
 
 body:json {

@@ -10,10 +10,7 @@ get {
 
 headers {
   Accept: application/json
-}
-
-auth:bearer {
-  token: {{adminToken}}
+  Authorization: Bearer {{adminToken}}
 }
 
 tests {
@@ -21,4 +18,20 @@ tests {
     expect(res.getStatus()).to.equal(200);
     expect(res.getBody().data).to.have.lengthOf(5);
   });
+}
+
+script:post-response {
+  const records = res.getBody().data || [];
+  const variablesByName = {
+    "Ana": "estudiante1Id",
+    "Luis": "estudiante2Id",
+    "María": "estudiante3Id",
+    "Carlos": "estudiante4Id",
+    "Sofía": "estudiante5Id"
+  };
+
+  for (const record of records) {
+    const variable = variablesByName[record.nombre];
+    if (variable) bru.setEnvVar(variable, String(record.id));
+  }
 }

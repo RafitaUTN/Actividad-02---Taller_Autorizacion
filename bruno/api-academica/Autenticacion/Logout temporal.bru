@@ -10,10 +10,7 @@ post {
 
 headers {
   Accept: application/json
-}
-
-auth:bearer {
-  token: {{temporalToken}}
+  Authorization: Bearer {{temporalToken}}
 }
 
 tests {

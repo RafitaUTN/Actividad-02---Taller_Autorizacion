@@ -1,0 +1,19 @@
+meta {
+  name: Admin dashboard sin token
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/admin/dashboard
+}
+
+headers {
+  Accept: application/json
+}
+
+tests {
+  test("dashboard administrador exige autenticación", function () {
+    expect(res.getStatus()).to.equal(401);
+  });
+}
