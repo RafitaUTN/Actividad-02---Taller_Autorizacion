@@ -1,5 +1,7 @@
 # Cierre de actividad — Integrante 5
 
+> **Nota de actualización:** el texto que sigue conserva instrucciones y resultados históricos. Para el estado actual, incluida la corrección de la validación y las pruebas ejecutadas después del merge, consultar `docs/INTEGRACION_NESTOR.md` y `evidence/integrante-5/RESULTADOS.md`. No ejecutar `migrate:fresh` sobre bases existentes ni asumir IDs fijos. Las respuestas de reflexión de este documento son material previo, no respuestas personales verificadas de Néstor.
+
 Este paquete prepara las pruebas formales, la colección de Bruno, las respuestas de reflexión y el registro de evidencias. Corresponde ejecutarlo como último paso, una vez que el equipo integre las ramas de autorización y CRUD.
 
 ## Dependencias de integración

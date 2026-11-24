@@ -1,3 +1,33 @@
+# API académica — taller de autorización
+
+**Estado:** integración y pruebas finales pendientes. Consultar `docs/INTEGRACION_NESTOR.md` y `evidence/integrante-5/RESULTADOS.md`; no asumir que resultados anteriores corresponden a esta rama.
+
+## Instalación local
+
+El `composer.lock` actual requiere PHP 8.4.1 o posterior, Composer y la extensión PDO SQLite. Desde la raíz, con esa versión de PHP activa:
+
+```powershell
+php -v
+composer install
+if (-not (Test-Path .env)) { Copy-Item .env.example .env; php artisan key:generate }
+```
+
+No reemplazar `.env` existente. Para datos de demostración usar una base SQLite nueva y desechable, configurar su ruta en `.env` y verificar que apunta a esa base antes de ejecutar `php artisan migrate --seed`. No ejecutar `migrate:fresh` sobre datos existentes. No usar `composer setup`, porque ejecuta migraciones sin esta verificación.
+
+```powershell
+php artisan --version
+php artisan route:list --path=api -v
+php artisan serve
+```
+
+Las pruebas usan SQLite `:memory:` según `phpunit.xml`, pero antes de ejecutarlas se debe comprobar la conexión **efectiva** de testing, sin caché de configuración ni variables externas que cambien la base. Después: `php artisan test`. Las pruebas con `RefreshDatabase` modifican la base seleccionada.
+
+## Bruno y evidencias
+
+Abrir `bruno/api-academica` en Bruno y seleccionar el entorno `local`. Ejecutar el login de administrador y el listado; identificar en los datos sembrados los registros de Ana, Luis, María, Carlos y Sofía y asignar sus IDs reales a las variables `estudiante1Id` a `estudiante5Id`. Si el listado está paginado, consultar todas las páginas. Ejecutar los demás logins para generar tokens locales, sin exportarlos ni incluirlos en capturas. La colección sigue incompleta y no ha sido ejecutada en esta sesión. Guardar solo resultados reales y sanitizados; los pendientes están indicados en `evidence/integrante-5/RESULTADOS.md`. Nunca publicar `.env`, `vendor`, bases privadas ni tokens.
+
+---
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">

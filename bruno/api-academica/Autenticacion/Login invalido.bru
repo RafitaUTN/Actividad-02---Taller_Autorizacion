@@ -1,0 +1,28 @@
+meta {
+  name: Login invalido
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/api/login
+  body: json
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "email": "admin@academica.test",
+    "password": "incorrecta"
+  }
+}
+
+tests {
+  test("credenciales invalidas se rechazan", function () {
+    expect(res.getStatus()).to.equal(422);
+  });
+}

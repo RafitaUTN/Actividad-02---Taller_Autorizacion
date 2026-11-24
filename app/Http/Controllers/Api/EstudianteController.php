@@ -114,9 +114,9 @@ class EstudianteController extends Controller
         Gate::authorize('update', $estudiante);
 
         $data = $request->validate([
-            'user_id' => ['prohibited'],
-            'carrera_id' => ['prohibited'],
-            'sede_id' => ['prohibited'],
+            'user_id' => ['missing'],
+            'carrera_id' => ['missing'],
+            'sede_id' => ['missing'],
             'cedula' => [
                 'sometimes',
                 'required',
