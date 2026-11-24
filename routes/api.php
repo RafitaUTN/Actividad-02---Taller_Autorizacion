@@ -1,6 +1,9 @@
+
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\EstudianteController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('throttle:10,1')->group(function () {
@@ -9,6 +12,53 @@ Route::middleware('throttle:10,1')->group(function () {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
+
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']);
+
+    // Dashboard exclusivo para administradores.
+    Route::get('/admin/dashboard', function (Request $request) {
+        return response()->json([
+            'message' => 'Bienvenido al dashboard administrativo',
+            'user' => $request->user()->name,
+        ]);
+    })->middleware('can:access-admin-dashboard');
+
+    // Dashboard exclusivo para profesores.
+    Route::get('/profesor/dashboard', function (Request $request) {
+        return response()->json([
+            'message' => 'Bienvenido al dashboard de profesores',
+            'user' => $request->user()->name,
+        ]);
+    })->middleware('can:access-professor-dashboard');
+
+    // Listar estudiantes.
+    Route::get('/estudiantes', [
+        EstudianteController::class, 'index',
+    ])->middleware('permission:estudiantes.ver');
+
+    // Consultar un estudiante.
+    Route::get('/estudiantes/{estudiante}', [
+        EstudianteController::class, 'show',
+    ])->middleware('permission:estudiantes.ver');
+
+    // Registrar estudiantes.
+    Route::post('/estudiantes', [
+        EstudianteController::class, 'store',
+    ])->middleware('permission:estudiantes.crear');
+
+    // Actualizar estudiantes.
+    Route::put('/estudiantes/{estudiante}', [
+        EstudianteController::class, 'update',
+    ])->middleware('permission:estudiantes.editar');
+
+    Route::patch('/estudiantes/{estudiante}', [
+        EstudianteController::class, 'update',
+    ])->middleware('permission:estudiantes.editar');
+
+    // Eliminar estudiantes.
+    Route::delete('/estudiantes/{estudiante}', [
+        EstudianteController::class, 'destroy',
+    ])->middleware('permission:estudiantes.eliminar');
+
 });
