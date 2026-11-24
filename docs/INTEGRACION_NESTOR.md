@@ -18,7 +18,7 @@ Referencia revisada: documento del taller «Actividad 02 - Taller_Autorizacion_L
 
 Actualización: después de corregir la regresión de `sede_id: null`, la suite completa pasó con 24 pruebas y 114 aserciones. El alias middleware se registró en `bootstrap/app.php`, y las rutas CRUD y Gates están integradas. La verificación de Bruno continúa pendiente. El listado filtrado por roles difiere del listado general descrito en el taller y requiere acuerdo del equipo.
 
-El documento propone listado general para cualquier usuario autenticado; la Policy exige permisos y el CRUD de la rama no integrada filtra por rol. Esta diferencia necesita acuerdo del equipo antes de considerarla conforme. La documentación previa describe coordinador con lectura de su carrera y edición de misma carrera y sede; corresponde confirmar el acuerdo antes de fijar expectativas.
+El documento propone listado general para cualquier usuario autenticado; la Policy exige permisos y el CRUD integrado filtra por rol. Esta diferencia necesita acuerdo del equipo antes de considerarla conforme. La documentación previa describe coordinador con lectura de su carrera y edición de misma carrera y sede; corresponde confirmar el acuerdo antes de fijar expectativas.
 
 ## Preparación segura
 
@@ -29,7 +29,3 @@ El documento propone listado general para cualquier usuario autenticado; la Poli
 ## Colección y evidencias
 
 La colección existente está en `bruno/api-academica`. Está preparada parcialmente, no consta ejecución en esta sesión. Necesita IDs variables obtenidos de datos reales, casos de autenticación y CRUD adicionales y una ejecución con respuestas observadas. No capturar tokens ni datos privados. El borrado debe usar un registro creado para esa prueba.
-
-## Defensa: resumen provisional
-
-Se revisaron los requisitos y las ramas, se integraron el CRUD y los Gates en la rama de trabajo, y se probaron autenticación con tokens reales, autorización y validación de actualizaciones. La colección y las evidencias manuales aún están pendientes.

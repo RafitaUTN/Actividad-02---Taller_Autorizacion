@@ -1,0 +1,39 @@
+meta {
+  name: Registro temporal
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{baseUrl}}/api/register
+  body: json
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+script:pre-request {
+  bru.setVar("correoTemporal", `registro-${Date.now()}-${Math.floor(Math.random() * 1000000)}@example.test`);
+}
+
+body:json {
+  {
+    "name": "Cuenta temporal",
+    "email": "{{correoTemporal}}",
+    "password": "Password123!",
+    "password_confirmation": "Password123!"
+  }
+}
+
+tests {
+  test("registro genera un token", function () {
+    expect(res.getStatus()).to.equal(201);
+    expect(res.getBody().token).to.be.a("string");
+  });
+}
+
+script:post-response {
+  if (res.getStatus() === 201) bru.setEnvVar("temporalToken", res.getBody().token);
+}

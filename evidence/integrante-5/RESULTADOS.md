@@ -10,7 +10,7 @@ Posteriormente se añadió y ejecutó `ValidacionActualizacionTest`: **falló in
 
 Antes de la corrección, la suite completa informó **1 fallida, 22 aprobadas y 90 aserciones**. La regresión verificó primero que la sede permaneció sin cambios y luego falló por el código HTTP. Ese resultado es histórico, no el resultado final indicado arriba.
 
-La colección Bruno se parametrizó parcialmente con IDs variables; **no se ejecutó en esta sesión**. Falta completar solicitudes de registro, logout, CRUD y validaciones, así como evidencias sanitizadas. La integración final depende de resolver los pendientes documentados.
+La colección Bruno se parametrizó parcialmente con IDs variables; **no se ejecutó en esta sesión**. Se añadieron solicitudes de registro y revocación, pendientes de ejecución; faltan casos de CRUD y validaciones, así como evidencias sanitizadas. La integración final depende de resolver los pendientes documentados.
 
 ## Acta histórica y casos Bruno pendientes
 

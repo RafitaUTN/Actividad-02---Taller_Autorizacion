@@ -1,0 +1,23 @@
+meta {
+  name: Logout temporal
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{baseUrl}}/api/logout
+}
+
+headers {
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{temporalToken}}
+}
+
+tests {
+  test("logout revoca token temporal", function () {
+    expect(res.getStatus()).to.equal(200);
+  });
+}

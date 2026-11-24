@@ -1,0 +1,23 @@
+meta {
+  name: Token temporal revocado
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{baseUrl}}/api/me
+}
+
+headers {
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{temporalToken}}
+}
+
+tests {
+  test("token revocado se rechaza", function () {
+    expect(res.getStatus()).to.equal(401);
+  });
+}
