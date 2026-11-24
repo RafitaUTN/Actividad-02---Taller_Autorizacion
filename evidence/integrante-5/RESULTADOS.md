@@ -2,6 +2,27 @@
 
 ## Ejecución actual — 24-11-2026
 
+### Solicitudes HTTP reales sobre base aislada
+
+Se ejecutaron solicitudes HTTP con PowerShell contra Laravel en `127.0.0.1`, con una base SQLite nueva y exclusiva de prueba, migrada y sembrada después de verificar su ruta. Se consultaron los IDs en el listado; no se guardaron tokens. Estas solicitudes **no son una ejecución de Bruno**.
+
+| Caso | Observado |
+|---|---|
+| Login administrador / profesor / estudiante | 200 / 200 / 200 |
+| Dashboard administrador: administrador / profesor / estudiante / sin token | 200 / 403 / 403 / 401 |
+| Dashboard profesor: administrador / profesor / estudiante / sin token | 403 / 200 / 403 / 401 |
+| Estudiante consulta propio / ajeno activo / ajeno inactivo | 200 / 403 / 403 |
+| Profesor edita misma carrera y sede / misma carrera y otra sede | 200 / 403 |
+| Logout administrador / me con token revocado | 200 / 401 |
+| Profesor: edición misma carrera/misma sede; misma/otra; otra/misma; otra/otra | 200 / 403 / 403 / 403 |
+| Coordinador: edición misma carrera/misma sede; misma/otra; otra/misma; otra/otra | 200 / 403 / 403 / 403 |
+| Estudiante edita propio | 403 |
+| Profesor crea / elimina | 403 / 403 |
+| Administrador envía sede nula | 422 |
+| Credenciales incorrectas | 422 |
+
+Un intento intermedio de automatización HTTP falló antes de enviar solicitudes por una colisión de nombre con un alias de PowerShell; se corrigió y los resultados de la repetición aparecen en la tabla. Quedan pendientes los casos de la colección Bruno no incluidos en esta tabla y sus capturas. Las restricciones observadas para coordinador no sustituyen la confirmación del acuerdo del equipo.
+
 **Resultado posterior a la corrección:** 24 pruebas aprobadas y 114 aserciones, en SQLite `:memory:` con PHP 8.4.26. Se verificó que enviar `user_id`, `carrera_id` o `sede_id` en una actualización, tanto nulos como con valor, devuelve 422 y no cambia el registro. La integración de `feature/gates-crud` quedó registrada en el merge `eb0d684`. Bruno continúa sin ejecutarse en esta sesión.
 
 En una ejecución inicial de esta sesión se preparó la integración de `origin/feature/gates-crud` sobre `d118f74` y se registró el alias de middleware. Con PHP 8.4.26, Laravel 13 y conexión de testing comprobada como SQLite `:memory:`, `php artisan test --no-ansi` informó **22 pruebas aprobadas, 88 aserciones**. Incluye emisión y revocación de token Sanctum, Gates y la suite Feature existente. No equivale a ejecutar Bruno ni demuestra los casos no incluidos en la suite.
