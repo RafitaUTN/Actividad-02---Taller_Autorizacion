@@ -31,35 +31,44 @@ class AutorizacionEstudiantesTest extends TestCase
     {
         $admin = User::where('email', 'admin@academica.test')->firstOrFail();
 
-        $response = $this->actingAs($admin, 'sanctum')->getJson('/api/estudiantes');
-
-        $response->assertOk()->assertJsonCount(5, 'data');
+        $this->actingAs($admin, 'sanctum')
+            ->getJson('/api/estudiantes')
+            ->assertOk()
+            ->assertJsonCount(5, 'data');
     }
 
-    public function test_professor_and_coordinator_list_only_their_career(): void
+    public function test_professor_and_coordinator_can_list_all_students(): void
     {
         foreach (['profesor@academica.test', 'coordinador@academica.test'] as $email) {
             $user = User::where('email', $email)->firstOrFail();
 
-            $response = $this->actingAs($user, 'sanctum')->getJson('/api/estudiantes');
-
-            $response->assertOk()->assertJsonCount(3, 'data');
-            $this->assertSame(
-                ['Ana', 'Luis', 'Sofía'],
-                collect($response->json('data'))->pluck('nombre')->all(),
-            );
+            $this->actingAs($user, 'sanctum')
+                ->getJson('/api/estudiantes')
+                ->assertOk()
+                ->assertJsonCount(5, 'data')
+                ->assertJsonFragment(['nombre' => 'María']);
         }
     }
 
-    public function test_student_can_list_only_their_own_record(): void
+    public function test_student_can_list_all_students_but_view_only_their_own_detail(): void
     {
         $student = User::where('email', 'estudiante1@academica.test')->firstOrFail();
 
         $this->actingAs($student, 'sanctum')
             ->getJson('/api/estudiantes')
             ->assertOk()
-            ->assertJsonCount(1, 'data')
-            ->assertJsonPath('data.0.nombre', 'Ana');
+            ->assertJsonCount(5, 'data')
+            ->assertJsonFragment(['nombre' => 'Luis']);
+    }
+
+    public function test_authenticated_account_without_role_can_list_students(): void
+    {
+        $authenticatedWithoutRole = User::factory()->create();
+
+        $this->actingAs($authenticatedWithoutRole, 'sanctum')
+            ->getJson('/api/estudiantes')
+            ->assertOk()
+            ->assertJsonCount(5, 'data');
     }
 
     public function test_student_can_view_own_record_but_not_another_students_record(): void
@@ -192,15 +201,6 @@ class AutorizacionEstudiantesTest extends TestCase
 
         $this->actingAs($professor, 'sanctum')
             ->putJson("/api/estudiantes/{$record->id}", ['nombre' => 'Sin permiso'])
-            ->assertForbidden();
-    }
-
-    public function test_account_without_role_cannot_list_students(): void
-    {
-        $unassigned = User::factory()->create();
-
-        $this->actingAs($unassigned, 'sanctum')
-            ->getJson('/api/estudiantes')
             ->assertForbidden();
     }
 

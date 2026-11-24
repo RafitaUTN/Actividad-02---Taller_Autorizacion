@@ -1,0 +1,20 @@
+meta {
+  name: Profesor dashboard estudiante
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/api/profesor/dashboard
+}
+
+headers {
+  Accept: application/json
+  Authorization: Bearer {{estudianteToken}}
+}
+
+tests {
+  test("estudiante recibe 403 en dashboard profesor", function () {
+    expect(res.getStatus()).to.equal(403);
+  });
+}

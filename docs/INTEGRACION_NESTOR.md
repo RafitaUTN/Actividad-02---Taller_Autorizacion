@@ -1,48 +1,18 @@
-# Integración y verificación — integrante 5
+# Integración y verificación — actividad 2
 
-Referencia revisada: documento del taller «Actividad 02 - Taller_Autorizacion_Laravel_13.md». Base de esta rama: `d118f74` (`origin/main`); `origin/feature/gates-crud` integrada en el merge `eb0d684`. Esta revisión no constituye una integración final aprobada.
+## Estado integrado
 
-## Estado inicial
+La versión final integra Laravel 13, Sanctum, Spatie Permission, modelos/migraciones de estudiantes, carreras y sedes, roles y permisos, autenticación, Gates, Policies, CRUD y reglas ABAC. El registro público no permite autoasignarse roles o permisos.
 
-| Requisito | Estado | Observación |
-|---|---|---|
-| Laravel 13, Sanctum, Spatie | Implementado, pendiente de prueba | Declarados en Composer; el lock incluye Laravel 13.43.0. |
-| Modelos, migraciones y relaciones | Implementado, pendiente de prueba | Existen estructuras para usuarios, carreras, sedes y estudiantes. |
-| Registro, login, me y logout | Implementado, pendiente de prueba | Hay rutas y controlador; se prepararon pruebas con tokens reales. |
-| Gates, rutas y CRUD | Faltante en main | Existen en `origin/feature/gates-crud`, no integrada a main por historial. |
-| Policies, permisos y ABAC | Implementado, pendiente de prueba | Hay Policy y seeder; falta integración del CRUD y ejecución. |
-| Middleware de permisos | Faltante | `bootstrap/app.php` no registra el alias `permission`. |
-| Suite Feature y colección Bruno | Implementado, pendiente de prueba | Ya existen; la colección utiliza IDs fijos y requiere completarse. |
-| Evidencias reales y matriz final | Faltante | El acta Bruno existente indica que está pendiente. Resultados históricos no prueban esta rama. |
-| Reflexión individual | Pendiente | Debe basarse en las respuestas personales del estudiante. |
+`GET /api/estudiantes` permite el listado general a cualquier cuenta autenticada, de acuerdo con el escenario del anuncio. La consulta por ID mantiene Policy: el estudiante solo consulta su propio registro, y profesor/coordinador se limitan a su carrera. Para modificar, profesor/coordinador deben coincidir en carrera y sede.
 
-Actualización: después de corregir la regresión de `sede_id: null`, la suite completa pasó con 24 pruebas y 114 aserciones. El alias middleware se registró en `bootstrap/app.php`, y las rutas CRUD y Gates están integradas. La verificación de Bruno continúa pendiente. El listado filtrado por roles difiere del listado general descrito en el taller y requiere acuerdo del equipo.
+## Validación
 
-El documento propone listado general para cualquier usuario autenticado; la Policy exige permisos y el CRUD integrado filtra por rol. Esta diferencia necesita acuerdo del equipo antes de considerarla conforme. La documentación previa describe coordinador con lectura de su carrera y edición de misma carrera y sede; corresponde confirmar el acuerdo antes de fijar expectativas.
+- Las pruebas Feature verifican Sanctum, 401/403, listado general, propiedad, RBAC, Gate, las cuatro combinaciones ABAC, CRUD y validaciones de actualización.
+- La colección Bruno contiene autenticación, listado general por diferentes perfiles, detalle, ABAC y dashboards.
+- El entorno de Bruno usa tokens dinámicos y IDs obtenidos desde la respuesta del listado; el archivo de entorno versionado debe permanecer sin tokens.
+- Los resultados de las ejecuciones concretas están en `evidence/integrante-5/RESULTADOS.md`.
 
-## Preparación segura
+Para verificar el proyecto, usar `composer install`, `php artisan migrate:status`, `php artisan route:list --path=api -v` y `php artisan test --no-ansi`. `phpunit.xml` configura SQLite `:memory:` para la suite. Bruno debe ejecutarse contra una base de laboratorio separada, migrada y sembrada.
 
-### Matriz de comprobación actual
-
-| Requisito | Estado | Evidencia o pendiente |
-|---|---|---|
-| Laravel 13 y migraciones | Comprobado | Composer instaló el lock con PHP 8.4; migraciones y seeders ejecutados en SQLite aislada. |
-| Registro, login, me y logout | Comprobado | Pruebas Feature con tokens reales; logout y rechazo posterior también observados por HTTP. |
-| Registro sin privilegios y validaciones | Comprobado | Feature verifica registro sin roles/permisos y varios campos inválidos. |
-| Gates de administrador y profesor | Comprobado | Pruebas Feature y solicitudes HTTP con roles y sin token. |
-| Policies y ABAC | Comprobado parcialmente | Feature y HTTP cubren propiedad y combinaciones de carrera/sede; el acuerdo del coordinador está pendiente de confirmación. |
-| Listado general | Pendiente de acuerdo | Se comprobó el filtrado por rol, distinto del texto general del documento. |
-| CRUD y validaciones | Comprobado parcialmente | Feature cubre creación y borrado temporal, actualización y validaciones de unicidad y relaciones; no demuestra todos los valores posibles. |
-| Colección Bruno | Pendiente | Preparada parcialmente, no ejecutada; existen casos CRUD y de validación sin completar. |
-| Evidencias | Comprobado parcialmente | `evidence/integrante-5/RESULTADOS.md` registra HTTP real y suite; no hay evidencia de ejecución Bruno. |
-| Reflexión individual | Pendiente | Se requieren las respuestas personales de Néstor. |
-
-Última suite: 26 pruebas aprobadas y 136 aserciones, con conexión de testing verificada en SQLite `:memory:`.
-
-`composer.lock` exige PHP 8.4.1 o superior para sus versiones actuales de Symfony, aunque `composer.json` admite PHP 8.3. Con PHP compatible ejecutar `composer install` sin actualizar dependencias. No ejecutar `composer setup`: incluye migraciones sobre la conexión configurada. Copiar `.env.example` solo si falta `.env` y generar la clave solo en esa configuración nueva. Usar una base local desechable separada y confirmar la conexión antes de migrar o sembrar. Nunca ejecutar `migrate:fresh` sobre datos existentes.
-
-`phpunit.xml` declara SQLite en memoria, pero debe verificarse la configuración efectiva de testing antes de ejecutar pruebas con `RefreshDatabase`; una variable externa o caché de configuración podría alterarla. Ejecutar la suite únicamente después de esa comprobación. No publicar `.env`, bases privadas, `vendor` ni tokens.
-
-## Colección y evidencias
-
-La colección existente está en `bruno/api-academica`. Está preparada parcialmente, no consta ejecución en esta sesión. Necesita IDs variables obtenidos de datos reales, casos de autenticación y CRUD adicionales y una ejecución con respuestas observadas. No capturar tokens ni datos privados. El borrado debe usar un registro creado para esa prueba.
+No incluir `.env`, tokens personales ni bases con datos privados en la entrega.

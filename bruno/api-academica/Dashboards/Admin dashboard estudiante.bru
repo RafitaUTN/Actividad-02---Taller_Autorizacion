@@ -1,0 +1,20 @@
+meta {
+  name: Admin dashboard estudiante
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/admin/dashboard
+}
+
+headers {
+  Accept: application/json
+  Authorization: Bearer {{estudianteToken}}
+}
+
+tests {
+  test("estudiante recibe 403 en dashboard administrador", function () {
+    expect(res.getStatus()).to.equal(403);
+  });
+}

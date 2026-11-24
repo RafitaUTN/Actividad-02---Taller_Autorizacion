@@ -12,27 +12,14 @@ use Illuminate\Validation\ValidationException;
 
 class EstudianteController extends Controller
 {
-    // Listar estudiantes según el rol del usuario.
+    // Cualquier usuario autenticado puede consultar el listado general.
     public function index(Request $request)
     {
         Gate::authorize('viewAny', Estudiante::class);
 
-        $user = $request->user();
-        $query = Estudiante::with(['carrera', 'sede']);
-
-        if ($user->hasRole('administrador')) {
-            // El administrador puede consultar todos.
-        } elseif ($user->hasAnyRole(['profesor', 'coordinador'])) {
-            abort_if($user->carrera_id === null, 403);
-
-            $query->where('carrera_id', $user->carrera_id);
-        } elseif ($user->hasRole('estudiante')) {
-            $query->where('user_id', $user->id);
-        } else {
-            abort(403);
-        }
-
-        return response()->json($query->paginate(10));
+        return response()->json(
+            Estudiante::with(['carrera', 'sede'])->paginate(10)
+        );
     }
 
     // Registrar un nuevo estudiante.

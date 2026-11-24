@@ -1,0 +1,20 @@
+meta {
+  name: Profesor dashboard administrador
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/api/profesor/dashboard
+}
+
+headers {
+  Accept: application/json
+  Authorization: Bearer {{adminToken}}
+}
+
+tests {
+  test("administrador recibe 403 en dashboard profesor", function () {
+    expect(res.getStatus()).to.equal(403);
+  });
+}

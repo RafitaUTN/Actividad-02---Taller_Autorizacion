@@ -1,4 +1,3 @@
-
 <?php
 
 use App\Http\Controllers\Api\AuthController;
@@ -35,7 +34,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Listar estudiantes.
     Route::get('/estudiantes', [
         EstudianteController::class, 'index',
-    ])->middleware('permission:estudiantes.ver');
+    ]);
 
     // Consultar un estudiante.
     Route::get('/estudiantes/{estudiante}', [

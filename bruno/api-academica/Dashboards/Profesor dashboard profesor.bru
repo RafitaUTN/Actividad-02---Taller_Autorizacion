@@ -1,0 +1,20 @@
+meta {
+  name: Profesor dashboard profesor
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/profesor/dashboard
+}
+
+headers {
+  Accept: application/json
+  Authorization: Bearer {{profesorToken}}
+}
+
+tests {
+  test("profesor accede a su dashboard", function () {
+    expect(res.getStatus()).to.equal(200);
+  });
+}

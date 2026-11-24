@@ -1,0 +1,19 @@
+meta {
+  name: Profesor dashboard sin token
+  type: http
+  seq: 9
+}
+
+get {
+  url: {{baseUrl}}/api/profesor/dashboard
+}
+
+headers {
+  Accept: application/json
+}
+
+tests {
+  test("dashboard profesor exige autenticación", function () {
+    expect(res.getStatus()).to.equal(401);
+  });
+}

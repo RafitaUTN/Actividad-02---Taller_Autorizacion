@@ -9,19 +9,7 @@ class EstudiantePolicy
 {
     public function viewAny(User $user): bool
     {
-        if (! $user->can('estudiantes.ver')) {
-            return false;
-        }
-
-        if ($user->hasRole('administrador')) {
-            return true;
-        }
-
-        if ($user->hasAnyRole(['profesor', 'coordinador'])) {
-            return $user->carrera_id !== null;
-        }
-
-        return $user->hasRole('estudiante');
+        return true;
     }
 
     public function view(User $user, Estudiante $estudiante): bool
