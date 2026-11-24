@@ -1,0 +1,24 @@
+meta {
+  name: Listado administrador
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/estudiantes
+}
+
+headers {
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+tests {
+  test("admin consulta los cinco registros de prueba", function () {
+    expect(res.getStatus()).to.equal(200);
+    expect(res.getBody().data).to.have.lengthOf(5);
+  });
+}

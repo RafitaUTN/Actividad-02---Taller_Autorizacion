@@ -1,0 +1,23 @@
+meta {
+  name: Estudiante consulta registro ajeno activo
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/estudiantes/2
+}
+
+headers {
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{estudianteToken}}
+}
+
+tests {
+  test("estudiante recibe 403 para registro ajeno activo", function () {
+    expect(res.getStatus()).to.equal(403);
+  });
+}

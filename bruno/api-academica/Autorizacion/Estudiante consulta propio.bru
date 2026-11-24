@@ -1,0 +1,24 @@
+meta {
+  name: Estudiante consulta su registro
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/estudiantes/1
+}
+
+headers {
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{estudianteToken}}
+}
+
+tests {
+  test("estudiante puede consultar su propio registro", function () {
+    expect(res.getStatus()).to.equal(200);
+    expect(res.getBody().nombre).to.equal("Ana");
+  });
+}

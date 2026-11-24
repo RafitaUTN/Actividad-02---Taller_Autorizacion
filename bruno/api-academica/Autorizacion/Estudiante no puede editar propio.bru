@@ -1,0 +1,31 @@
+meta {
+  name: Estudiante no puede editar su registro
+  type: http
+  seq: 8
+}
+
+put {
+  url: {{baseUrl}}/api/estudiantes/1
+  body: json
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{estudianteToken}}
+}
+
+body:json {
+  {
+    "nombre": "No autorizado"
+  }
+}
+
+tests {
+  test("estudiante no puede editar ni su propio registro", function () {
+    expect(res.getStatus()).to.equal(403);
+  });
+}

@@ -1,0 +1,19 @@
+meta {
+  name: Listado sin token
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/estudiantes
+}
+
+headers {
+  Accept: application/json
+}
+
+tests {
+  test("sin token recibe 401", function () {
+    expect(res.getStatus()).to.equal(401);
+  });
+}

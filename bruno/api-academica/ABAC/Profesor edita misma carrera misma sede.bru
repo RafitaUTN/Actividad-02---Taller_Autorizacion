@@ -1,0 +1,31 @@
+meta {
+  name: Profesor edita misma carrera misma sede
+  type: http
+  seq: 1
+}
+
+put {
+  url: {{baseUrl}}/api/estudiantes/1
+  body: json
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{profesorToken}}
+}
+
+body:json {
+  {
+    "nombre": "Ana"
+  }
+}
+
+tests {
+  test("profesor puede editar misma carrera y sede", function () {
+    expect(res.getStatus()).to.equal(200);
+  });
+}
