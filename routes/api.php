@@ -2,6 +2,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\EstudianteController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -30,5 +31,34 @@ Route::middleware('auth:sanctum')->group(function () {
             'user' => $request->user()->name,
         ]);
     })->middleware('can:access-professor-dashboard');
+
+    // Listar estudiantes.
+    Route::get('/estudiantes', [
+        EstudianteController::class, 'index',
+    ])->middleware('permission:estudiantes.ver');
+
+    // Consultar un estudiante.
+    Route::get('/estudiantes/{estudiante}', [
+        EstudianteController::class, 'show',
+    ])->middleware('permission:estudiantes.ver');
+
+    // Registrar estudiantes.
+    Route::post('/estudiantes', [
+        EstudianteController::class, 'store',
+    ])->middleware('permission:estudiantes.crear');
+
+    // Actualizar estudiantes.
+    Route::put('/estudiantes/{estudiante}', [
+        EstudianteController::class, 'update',
+    ])->middleware('permission:estudiantes.editar');
+
+    Route::patch('/estudiantes/{estudiante}', [
+        EstudianteController::class, 'update',
+    ])->middleware('permission:estudiantes.editar');
+
+    // Eliminar estudiantes.
+    Route::delete('/estudiantes/{estudiante}', [
+        EstudianteController::class, 'destroy',
+    ])->middleware('permission:estudiantes.eliminar');
 
 });
