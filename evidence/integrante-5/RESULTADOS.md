@@ -2,6 +2,8 @@
 
 ## Ejecución actual — 24-11-2026
 
+**Última ejecución automatizada:** 26 pruebas aprobadas y 136 aserciones con SQLite `:memory:` y PHP 8.4.26. Incluye nuevas comprobaciones de campos obligatorios, IDs inexistentes, unicidad y ausencia de cambios en actualizaciones rechazadas. La conexión efectiva de testing se verificó antes de ejecutar.
+
 ### Solicitudes HTTP reales sobre base aislada
 
 Se ejecutaron solicitudes HTTP con PowerShell contra Laravel en `127.0.0.1`, con una base SQLite nueva y exclusiva de prueba, migrada y sembrada después de verificar su ruta. Se consultaron los IDs en el listado; no se guardaron tokens. Estas solicitudes **no son una ejecución de Bruno**.

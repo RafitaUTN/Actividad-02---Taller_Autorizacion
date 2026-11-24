@@ -22,6 +22,23 @@ El documento propone listado general para cualquier usuario autenticado; la Poli
 
 ## Preparación segura
 
+### Matriz de comprobación actual
+
+| Requisito | Estado | Evidencia o pendiente |
+|---|---|---|
+| Laravel 13 y migraciones | Comprobado | Composer instaló el lock con PHP 8.4; migraciones y seeders ejecutados en SQLite aislada. |
+| Registro, login, me y logout | Comprobado | Pruebas Feature con tokens reales; logout y rechazo posterior también observados por HTTP. |
+| Registro sin privilegios y validaciones | Comprobado | Feature verifica registro sin roles/permisos y varios campos inválidos. |
+| Gates de administrador y profesor | Comprobado | Pruebas Feature y solicitudes HTTP con roles y sin token. |
+| Policies y ABAC | Comprobado parcialmente | Feature y HTTP cubren propiedad y combinaciones de carrera/sede; el acuerdo del coordinador está pendiente de confirmación. |
+| Listado general | Pendiente de acuerdo | Se comprobó el filtrado por rol, distinto del texto general del documento. |
+| CRUD y validaciones | Comprobado parcialmente | Feature cubre creación y borrado temporal, actualización y validaciones de unicidad y relaciones; no demuestra todos los valores posibles. |
+| Colección Bruno | Pendiente | Preparada parcialmente, no ejecutada; existen casos CRUD y de validación sin completar. |
+| Evidencias | Comprobado parcialmente | `evidence/integrante-5/RESULTADOS.md` registra HTTP real y suite; no hay evidencia de ejecución Bruno. |
+| Reflexión individual | Pendiente | Se requieren las respuestas personales de Néstor. |
+
+Última suite: 26 pruebas aprobadas y 136 aserciones, con conexión de testing verificada en SQLite `:memory:`.
+
 `composer.lock` exige PHP 8.4.1 o superior para sus versiones actuales de Symfony, aunque `composer.json` admite PHP 8.3. Con PHP compatible ejecutar `composer install` sin actualizar dependencias. No ejecutar `composer setup`: incluye migraciones sobre la conexión configurada. Copiar `.env.example` solo si falta `.env` y generar la clave solo en esa configuración nueva. Usar una base local desechable separada y confirmar la conexión antes de migrar o sembrar. Nunca ejecutar `migrate:fresh` sobre datos existentes.
 
 `phpunit.xml` declara SQLite en memoria, pero debe verificarse la configuración efectiva de testing antes de ejecutar pruebas con `RefreshDatabase`; una variable externa o caché de configuración podría alterarla. Ejecutar la suite únicamente después de esa comprobación. No publicar `.env`, bases privadas, `vendor` ni tokens.
