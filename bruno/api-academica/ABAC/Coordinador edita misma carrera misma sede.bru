@@ -1,0 +1,31 @@
+meta {
+  name: Coordinador edita misma carrera misma sede
+  type: http
+  seq: 5
+}
+
+put {
+  url: {{baseUrl}}/api/estudiantes/1
+  body: json
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{coordinadorToken}}
+}
+
+body:json {
+  {
+    "nombre": "Ana"
+  }
+}
+
+tests {
+  test("coordinador puede editar misma carrera y sede", function () {
+    expect(res.getStatus()).to.equal(200);
+  });
+}

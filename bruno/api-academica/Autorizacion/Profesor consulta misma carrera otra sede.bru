@@ -1,0 +1,23 @@
+meta {
+  name: Profesor consulta misma carrera y otra sede
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/api/estudiantes/2
+}
+
+headers {
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{profesorToken}}
+}
+
+tests {
+  test("profesor puede leer su carrera aunque sea otra sede", function () {
+    expect(res.getStatus()).to.equal(200);
+  });
+}
